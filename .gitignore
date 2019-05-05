@@ -1,6 +1,7 @@
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+/backup/
 
 ### STS ###
 .apt_generated
@@ -25,3 +26,6 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Elastic Beanstalk ###
+/*.zip
