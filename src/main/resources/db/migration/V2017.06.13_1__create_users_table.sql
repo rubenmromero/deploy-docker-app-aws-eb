@@ -1,0 +1,8 @@
+CREATE TABLE hello_world.users
+(
+  u_id NUMERIC NOT NULL,
+  u_name VARCHAR(100) NOT NULL,
+  u_surname VARCHAR(100) NOT NULL,
+  u_user_type SMALLINT DEFAULT 0,
+  u_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

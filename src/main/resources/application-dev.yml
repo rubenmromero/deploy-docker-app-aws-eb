@@ -1,0 +1,14 @@
+docker:
+  host: "${DOCKER_IP:localhost}"
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://${docker.host}:5432/postgres?currentSchema=hello_world"
+    username: postgres
+    password: test123456
+
+logging:
+  config: classpath:logback-dev.xml
+
+logback.access:
+  config: classpath:logback-access-aws.xml

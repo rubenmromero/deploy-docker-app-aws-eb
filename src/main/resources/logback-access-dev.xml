@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="CONSOLE_ACCESS" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%h %l %u [%t] "%r" %s %b "%i{Referer}" "%i{User-Agent}" %D "%header{X-Parent-Id}" "%header{X-Trace-Id}"</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <withJansi>true</withJansi>
+    </appender>
+
+    <appender-ref ref="CONSOLE_ACCESS" />
+</configuration>

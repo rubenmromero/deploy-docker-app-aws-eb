@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+    <property name="FILE_LOG_PATTERN" value="%date{ISO8601,GMT} %level ${PID:- } [%t] %logger : %replace(%msg \{%mdc\} %throwable){'\n','\\\\n'}%n%nopex"/>
+
+    <!--
+        To have color support in IntelliJ, please install 'Grep Console' plugin and set Enable ANSI coloring
+    -->
+    <property name="CONSOLE_LOG_PATTERN" value="%date{ISO8601,GMT} %highlight(${LOG_LEVEL_PATTERN:-%5p}) %magenta(${PID:- }) [%15.15t] %cyan(%-40.40logger{39}) : %m \{%mdc\}%n"/>
+
+    <include resource="logging/console-appender.xml" />
+    <include resource="logging/file-appender.xml" />
+    <include resource="logging/loggers.xml" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>

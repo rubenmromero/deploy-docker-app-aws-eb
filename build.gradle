@@ -1,0 +1,52 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.3.RELEASE'
+		logbackVersion = '1.2.3'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.schibsted'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+mainClassName = 'com.schibsted.helloworld.framework.Application'
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile("javax.inject:javax.inject:1")
+	compile('org.flywaydb:flyway-core')
+	runtime('org.postgresql:postgresql')
+
+	// Logging
+	compile("ch.qos.logback:logback-classic:${logbackVersion}")
+	compile("ch.qos.logback:logback-core:${logbackVersion}")
+	compile("ch.qos.logback:logback-access:${logbackVersion}")
+	compile 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+bootRun.doFirst {
+	systemProperty "spring.profiles.active", "dev"
+}
+
+run.dependsOn bootRun
