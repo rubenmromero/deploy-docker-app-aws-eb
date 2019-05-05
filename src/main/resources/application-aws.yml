@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://${RDS_HOSTNAME}:${RDS_PORT}/postgres?currentSchema=hello_world"
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+
+logging:
+  config: classpath:logback-aws.xml
+
+logback.access:
+  config: classpath:logback-access-aws.xml
