@@ -145,10 +145,20 @@ response = elasticbeanstalk.create_application_version(
 )
 print_response(response)
 
+# Wait for a seconds while the created application version is processed
 time.sleep(10)
 
 environment_name = application_name + '-' + arguments.environment_name
+
 environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
+wait_message_printed = False
+while (environment_configuration[0]['Status'] != 'Ready') and (environment_configuration[0]['Status'] != 'Terminated'):
+    if not wait_message_printed:
+        print("\nThere is an operation in progress in '" + environment_name + "' environment. Waiting for it to be completed...\n")
+        wait_message_printed = True
+    time.sleep(30)
+    environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
+
 if (not environment_configuration) or (environment_configuration[0]['Status'] == 'Terminated'):
     print("\nCreate '" + environment_name + "' deployment environment for '" + application_name + "' Elastic Beanstalk application:\n")
     response = elasticbeanstalk.create_environment(
