@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #
 # Modules Import
@@ -49,7 +49,7 @@ def build_application():
     shutil.rmtree(build_path, ignore_errors=True)
     os.chdir(os.path.dirname(__file__))
     gradlew_build_command = shlex.split('./gradlew build')
-    output, error = subprocess.Popen(gradlew_build_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    output, error = subprocess.Popen(gradlew_build_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8').communicate()
     print_result(output, error)
 
 #
@@ -72,12 +72,12 @@ def package_application():
 def create_session():
     if boto3.session.Session().get_credentials() is None:
         #print('Please provide AWS credentials, e.g. via the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.')
-        #sys.exit(-1)
+        #exit(-1)
 
         print("\nThere is no AWS configuration defined!\n")
-        access_key = raw_input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
-        secret_access_key = raw_input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
-        region = raw_input("Enter the region in which to deploy the application: ")
+        access_key = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
+        secret_access_key = input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
+        region = input("Enter the region in which to deploy the application: ")
 
         return boto3.Session(
             aws_access_key_id=access_key,
@@ -96,7 +96,7 @@ def upload_application_version():
     s3 = session.resource('s3')
     if not s3.Bucket(s3_bucket) in s3.buckets.all():
         s3.create_bucket(ACL='private', Bucket=s3_bucket, CreateBucketConfiguration={'LocationConstraint': session.region_name})
-    response = s3.Bucket(s3_bucket).put_object(Body=open(application_version_package_name + '.zip'), Key=application_version_package_name + '.zip')
+    response = s3.Bucket(s3_bucket).put_object(Body=open(application_version_package_name + '.zip', 'rb'), Key=application_version_package_name + '.zip')
     print(response)
     return s3_bucket
 
