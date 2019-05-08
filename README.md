@@ -88,6 +88,18 @@ Application and access logs will be generated in the following folder: `/var/log
 
 # Deployment
 
+## How does it work?
+
+The custom CLI deploys the Spring boot example application to AWS Elastic Beanstalk performing the following tasks:
+
+1. Create a boto3 session to store the AWS credentials and the region to use for the deployment. If there is any configuration stored in `~/.aws` folder from AWS CLI, the AWS credentials and the region are directly retrieved from there (it is possible to specify the profile to use as optional argument). If there is no stored configuration in `~/.aws` folder, the custom CLI ask for these parameters interactively.
+2. Check if the Elastic Beanstalk application is already created, and if not, create it.
+3. Build the Spring boot example application.
+4. Create the ZIP package for the new application version.
+5. Upload the application version package to a source bundle S3 bucket.
+6. Create the new application version for the Elastic Beanstalk application.
+7. Create the deployment environment if it does not exist or has been previously terminated, or update it if it is already created. The CLI check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it.
+
 ## Dependencies
 
 * `Python 3.3+`
@@ -108,7 +120,7 @@ Application and access logs will be generated in the following folder: `/var/log
 Here you have the message that you will get if you request help to the `deploy.py` custom CLI:
 
     $ ./deploy.py --help
-    usage: deploy.py [-h] -a APPLICATION_NAME -e ENVIRONMENT_NAME
+    usage: deploy.py [-h] -a APPLICATION_NAME -e ENVIRONMENT_NAME [-p PROFILE]
 
     Custom CLI to deploy an application to AWS Elastic Beanstalk
 
@@ -121,6 +133,9 @@ Here you have the message that you will get if you request help to the `deploy.p
       -e ENVIRONMENT_NAME, --environment-name ENVIRONMENT_NAME
                             Name of the deployment environment for the Elastic
                             Beanstalk application
+      -p PROFILE, --profile PROFILE
+                            Use a specific profile from AWS CLI stored
+                            configurations
 
 ## Execution Example
 
