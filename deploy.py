@@ -23,6 +23,7 @@ def arguments_parser():
     options = parser.add_argument_group('Options')
     options.add_argument('-a', '--application-name', type=str, action='store', dest='application_name', required=True, help='Name of the Elastic Beanstalk application')
     options.add_argument('-e', '--environment-name', type=str, action='store', dest='environment_name', required=True, help='Name of the deployment environment for the Elastic Beanstalk application')
+    options.add_argument('-p', '--profile', type=str, action='store', dest='profile', default='default', help='Use a specific profile from AWS CLI stored configurations')
 
     args = parser.parse_args()
     return args
@@ -70,11 +71,15 @@ def package_application():
 # Function to create a session of boto3 to interact with the AWS account
 #
 def create_session():
-    if boto3.session.Session().get_credentials() is None:
+    profile = arguments.profile
+    if not profile in boto3.session.Session().available_profiles:
         #print('Please provide AWS credentials, e.g. via the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.')
         #exit(-1)
 
-        print("\nThere is no AWS configuration defined!\n")
+        if profile == 'default':
+            print("\nThere is no AWS CLI configuration defined!\n")
+        else:
+            print("\nThe '" + profile + "' profile does not exist!\n")
         access_key = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
         secret_access_key = input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
         region = input("Enter the region in which to deploy the application: ")
@@ -85,7 +90,7 @@ def create_session():
             region_name=region,
         )
     else:
-        return boto3.session.Session()
+        return boto3.session.Session(profile_name=profile)
 
 #
 # Function to upload an application version package to a source bundle S3 bucket
@@ -113,7 +118,7 @@ arguments = arguments_parser()
 session = create_session()
 elasticbeanstalk = session.client('elasticbeanstalk')
 
-# Check if the application is already created
+# Check if the Elastic Beanstalk application is already created
 application_name = arguments.application_name
 if not elasticbeanstalk.describe_applications(ApplicationNames=[application_name])['Applications']:
     print("\nCreate '" + application_name + "' Elastic Beanstalk application:\n")
@@ -150,6 +155,7 @@ time.sleep(10)
 
 environment_name = application_name + '-' + arguments.environment_name
 
+# Check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it
 environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
 wait_message_printed = False
 while (environment_configuration[0]['Status'] != 'Ready') and (environment_configuration[0]['Status'] != 'Terminated'):
