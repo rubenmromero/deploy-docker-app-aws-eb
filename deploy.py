@@ -44,6 +44,32 @@ def print_response(response):
     print(json.dumps(response, default=str, sort_keys=True, indent=4, separators=(',', ': ')))
 
 #
+# Function to create a session of boto3 to interact with the AWS account
+#
+def create_session():
+    profile = arguments.profile
+    if (profile != 'default') and (not profile in boto3.session.Session().available_profiles):
+        print("\nThe '" + profile + "' profile does not exist!\n")
+    elif (profile == 'default') and (boto3.session.Session().get_credentials() is None):
+        print("\nThere is no AWS CLI configuration defined!\n")
+    elif profile != 'default':
+        return boto3.session.Session(profile_name=profile)
+    else:
+        return boto3.session.Session()
+
+    #print("Please provide AWS configuration, e.g. via the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION environment variables\n")
+    #exit(-1)
+    access_key = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
+    secret_access_key = input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
+    region = input("Enter the region in which to deploy the application: ")
+
+    return boto3.Session(
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_access_key,
+        region_name=region,
+    )
+
+#
 # Function to build the application
 #
 def build_application():
@@ -68,31 +94,6 @@ def package_application():
     return app_ver_pkg_name
 
 #
-# Function to create a session of boto3 to interact with the AWS account
-#
-def create_session():
-    profile = arguments.profile
-    if not profile in boto3.session.Session().available_profiles:
-        #print('Please provide AWS credentials, e.g. via the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.')
-        #exit(-1)
-
-        if profile == 'default':
-            print("\nThere is no AWS CLI configuration defined!\n")
-        else:
-            print("\nThe '" + profile + "' profile does not exist!\n")
-        access_key = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
-        secret_access_key = input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
-        region = input("Enter the region in which to deploy the application: ")
-
-        return boto3.Session(
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_access_key,
-            region_name=region,
-        )
-    else:
-        return boto3.session.Session(profile_name=profile)
-
-#
 # Function to upload an application version package to a source bundle S3 bucket
 #
 def upload_application_version():
@@ -100,8 +101,15 @@ def upload_application_version():
     s3_bucket = source_bundle_s3_bucket_prefix + '-' + session.region_name + '-' + sts.get_caller_identity()['Account']
     s3 = session.resource('s3')
     if not s3.Bucket(s3_bucket) in s3.buckets.all():
-        s3.create_bucket(ACL='private', Bucket=s3_bucket, CreateBucketConfiguration={'LocationConstraint': session.region_name})
-    response = s3.Bucket(s3_bucket).put_object(Body=open(application_version_package_name + '.zip', 'rb'), Key=application_version_package_name + '.zip')
+        s3.create_bucket(
+            ACL='private',
+            Bucket=s3_bucket,
+            CreateBucketConfiguration={'LocationConstraint': session.region_name}
+        )
+    response = s3.Bucket(s3_bucket).put_object(
+        Body=open(application_version_package_name + '.zip', 'rb'),
+        Key=application_version_package_name + '.zip'
+    )
     print(response)
     return s3_bucket
 
@@ -158,7 +166,7 @@ environment_name = application_name + '-' + arguments.environment_name
 # Check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it
 environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
 wait_message_printed = False
-while (environment_configuration[0]['Status'] != 'Ready') and (environment_configuration[0]['Status'] != 'Terminated'):
+while (environment_configuration) and (environment_configuration[0]['Status'] != 'Ready') and (environment_configuration[0]['Status'] != 'Terminated'):
     if not wait_message_printed:
         print("\nThere is an operation in progress in '" + environment_name + "' environment. Waiting for it to be completed...\n")
         wait_message_printed = True
@@ -172,14 +180,13 @@ if (not environment_configuration) or (environment_configuration[0]['Status'] ==
         EnvironmentName=environment_name,
         Description=environment_name + ' Environment',
         CNAMEPrefix=environment_name,
-        VersionLabel=application_version_package_name,
+        VersionLabel=application_version_package_name
     )
-    print_response(response)
 else:
     print("\nUpdate '" + environment_name + "' deployment environment for '" + application_name + "' Elastic Beanstalk application:\n")
     response = elasticbeanstalk.update_environment(
         ApplicationName=application_name,
         EnvironmentName=environment_name,
-        VersionLabel=application_version_package_name,
+        VersionLabel=application_version_package_name
     )
-    print_response(response)
+print_response(response)

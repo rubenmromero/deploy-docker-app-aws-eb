@@ -111,8 +111,21 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 
       AWSElasticBeanstalkFullAccess
 
+* Pip tool for Python packages management. Installation:
+
+      # From Linux
+      $ curl -O https://bootstrap.pypa.io/get-pip.py
+      $ sudo python3 get-pip.py
+
+      # From macOS
+      $ brew install python
+
 * AWS SDK for Python. Installation:
 
+      # From Linux
+      $ sudo pip3 install boto3
+
+      # From macOS
       $ pip3 install boto3
 
 ## Execution Method
@@ -140,3 +153,9 @@ Here you have the message that you will get if you request help to the `deploy.p
 ## Execution Example
 
     $ ./deploy.py --application-name helloworld --environment-name aws
+
+## Related Links
+
+* [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
+* [Single Container Docker Configuration](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
+* [Environment Manifest (env.yaml)](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-manifest.html)
