@@ -158,7 +158,7 @@ response = elasticbeanstalk.create_application_version(
 )
 print_response(response)
 
-# Wait for a seconds while the created application version is processed
+# Wait a few seconds while the created application version is processed
 time.sleep(10)
 
 environment_name = application_name + '-' + arguments.environment_name
