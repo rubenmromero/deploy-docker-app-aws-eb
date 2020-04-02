@@ -3,7 +3,16 @@
 #
 # Modules Import
 #
-import argparse, boto3, glob, json, os, shlex, shutil, subprocess, sys, time
+import argparse
+import boto3
+import glob
+import json
+import os
+import shlex
+import shutil
+import subprocess
+import sys
+import time
 from zipfile import ZipFile
 
 #
@@ -18,12 +27,36 @@ source_bundle_s3_bucket_prefix = 'elasticbeanstalk'
 # Function to parse the input arguments and build the help message
 #
 def arguments_parser():
-    parser = argparse.ArgumentParser(description='Custom CLI to deploy an application to AWS Elastic Beanstalk', add_help=True)
+    parser = argparse.ArgumentParser(
+        description='Custom CLI to deploy an application to AWS Elastic Beanstalk',
+        add_help=True
+    )
 
     options = parser.add_argument_group('Options')
-    options.add_argument('-a', '--application-name', type=str, action='store', dest='application_name', required=True, help='Name of the Elastic Beanstalk application')
-    options.add_argument('-e', '--environment-name', type=str, action='store', dest='environment_name', required=True, help='Name of the deployment environment for the Elastic Beanstalk application')
-    options.add_argument('-p', '--profile', type=str, action='store', dest='profile', default='default', help='Use a specific profile from AWS CLI stored configurations')
+    options.add_argument(
+        '-a', '--application-name',
+        type=str,
+        action='store',
+        dest='application_name',
+        required=True,
+        help='Name of the Elastic Beanstalk application'
+    )
+    options.add_argument(
+        '-e', '--environment-name',
+        type=str,
+        action='store',
+        dest='environment_name',
+        required=True,
+        help='Name of the deployment environment for the Elastic Beanstalk application'
+    )
+    options.add_argument(
+        '-p', '--profile',
+        type=str,
+        action='store',
+        dest='profile',
+        default='default',
+        help='Use a specific profile from AWS CLI stored configurations'
+    )
 
     args = parser.parse_args()
     return args
@@ -41,7 +74,13 @@ def print_result(output, error):
 # Function to print the boto3 responses in JSON format
 #
 def print_response(response):
-    print(json.dumps(response, default=str, sort_keys=True, indent=4, separators=(',', ': ')))
+    print(json.dumps(
+        response,
+        default=str,
+        sort_keys=True,
+        indent=4,
+        separators=(',', ': ')
+    ))
 
 #
 # Function to create a session of boto3 to interact with the AWS account
@@ -76,7 +115,12 @@ def build_application():
     shutil.rmtree(build_path, ignore_errors=True)
     os.chdir(os.path.dirname(__file__))
     gradlew_build_command = shlex.split('./gradlew build')
-    output, error = subprocess.Popen(gradlew_build_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8').communicate()
+    output, error = subprocess.Popen(
+        gradlew_build_command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        encoding='utf-8'
+    ).communicate()
     print_result(output, error)
 
 #
@@ -163,15 +207,22 @@ time.sleep(10)
 
 environment_name = application_name + '-' + arguments.environment_name
 
-# Check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it
-environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
+# Check if there is an operation in progress in the environment and
+# wait for it to be completed before updating or recreating it
+environment_configuration = elasticbeanstalk.describe_environments(
+    ApplicationName=application_name,
+    EnvironmentNames=[environment_name]
+)['Environments']
 wait_message_printed = False
 while (environment_configuration) and (environment_configuration[0]['Status'] != 'Ready') and (environment_configuration[0]['Status'] != 'Terminated'):
     if not wait_message_printed:
         print("\nThere is an operation in progress in '" + environment_name + "' environment. Waiting for it to be completed...\n")
         wait_message_printed = True
     time.sleep(30)
-    environment_configuration = elasticbeanstalk.describe_environments(ApplicationName=application_name, EnvironmentNames=[environment_name])['Environments']
+    environment_configuration = elasticbeanstalk.describe_environments(
+        ApplicationName=application_name,
+        EnvironmentNames=[environment_name]
+    )['Environments']
 
 if (not environment_configuration) or (environment_configuration[0]['Status'] == 'Terminated'):
     print("\nCreate '" + environment_name + "' deployment environment for '" + application_name + "' Elastic Beanstalk application:\n")

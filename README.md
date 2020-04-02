@@ -97,7 +97,7 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 1. Create a boto3 session to store the AWS credentials and the region to use for the deployment. If there is any configuration stored in `~/.aws` folder from AWS CLI, the AWS credentials and the region are directly retrieved from there (it is possible to specify the profile to use as optional argument). If there is no stored configuration in `~/.aws` folder, the custom CLI ask for these parameters interactively.
 2. Check if the Elastic Beanstalk application is already created, and if not, create it.
 3. Build the Spring boot example application.
-4. Create the ZIP package for the new application version.
+4. Create the ZIP package (source bundle) for the new application version.
 5. Upload the application version package to a source bundle S3 bucket.
 6. Create the new application version for the Elastic Beanstalk application.
 7. Create the deployment environment if it does not exist or has been previously terminated, or update it if it is already created. The CLI check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it.
