@@ -20,7 +20,7 @@ from zipfile import ZipFile
 #
 build_path = './build'
 application_path = build_path + '/libs'
-elasticbeanstalk_files_list = ['./Dockerrun.aws.json', './Dockerfile', 'env.yaml']
+elasticbeanstalk_paths = ['./Dockerrun.aws.json', './Dockerfile', 'env.yaml']
 source_bundle_s3_bucket_prefix = 'elasticbeanstalk'
 
 #
@@ -128,12 +128,18 @@ def build_application():
 #
 def package_application():
     app_file = glob.glob(application_path + '/*.jar')[0]
-    elasticbeanstalk_files_list.append(app_file)
+    elasticbeanstalk_paths.append(app_file)
     app_name = os.path.splitext(os.path.basename(app_file))[0]
     app_ver_pkg_name = app_name + '-' + time.strftime('%Y%m%d-%H%M%S')
     with ZipFile(app_ver_pkg_name + '.zip', 'w') as zip:
-        for file in elasticbeanstalk_files_list:
-            zip.write(file)
+        for path in elasticbeanstalk_paths:
+            if os.path.isdir(path):
+                 for root, dirs, files in os.walk(path):
+                     for file in files:
+                         zip.write(os.path.join(root, file))
+            else:
+                zip.write(path)
+
     print("All application files zipped successfully to '" + app_ver_pkg_name + ".zip' package\n")
     return app_ver_pkg_name
 
