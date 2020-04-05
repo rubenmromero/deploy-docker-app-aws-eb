@@ -109,7 +109,15 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 
 ## Prerequisites
 
-* AWS IAM EC2 Role (only for executions from EC2 instances) or IAM User with the following associated IAM managed policy:
+* The `aws-elasticbeanstalk-ec2-role` instance profile (AWS IAM EC2 Role) created in the AWS account:
+
+    [Managing Elastic Beanstalk instance profiles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html)
+
+* The `aws-elasticbeanstalk-service-role` service role (AWS IAM Elastic Beanstalk Role) created in the AWS account:
+
+    [Managing Elastic Beanstalk service roles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html)
+
+* An AWS IAM EC2 Role (only for executions from EC2 instances) or an IAM User with the following associated IAM managed policy:
 
       AWSElasticBeanstalkFullAccess
 
@@ -158,6 +166,8 @@ Here you have the message that you will get if you request help to the `deploy.p
 
 ## Related Links
 
+* [Managing Elastic Beanstalk instance profiles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html)
+* [Managing Elastic Beanstalk service roles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html)
 * [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
 * [Single Container Docker Configuration](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
 * [Environment Manifest (env.yaml)](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-manifest.html)

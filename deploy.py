@@ -113,7 +113,6 @@ def create_session():
 #
 def build_application():
     shutil.rmtree(build_path, ignore_errors=True)
-    os.chdir(os.path.dirname(__file__))
     gradlew_build_command = shlex.split('./gradlew build')
     output, error = subprocess.Popen(
         gradlew_build_command,
@@ -172,6 +171,12 @@ os.chdir(os.path.dirname(__file__))
 
 # Parse input arguments
 arguments = arguments_parser()
+
+# Check if an 'env.yaml' file exists in the project root folder
+if not os.path.isfile('env.yaml'):
+    print("\nThere is no 'env.yaml' environment configuration file created in the project root folder")
+    print("\nThis file must be present to deploy an environment to Elastic Beanstalk\n")
+    exit(-1)
 
 session = create_session()
 elasticbeanstalk = session.client('elasticbeanstalk')
