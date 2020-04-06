@@ -28,4 +28,5 @@
 /.nb-gradle/
 
 ### Elastic Beanstalk ###
+/env.yaml
 /*.zip
