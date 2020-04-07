@@ -98,12 +98,12 @@ def create_session():
 
     #print("Please provide AWS configuration, e.g. via the AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and AWS_DEFAULT_REGION environment variables\n")
     #exit(-1)
-    access_key = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
+    access_key_id = input("Enter the AWS_ACCESS_KEY_ID of the AWS account in which to deploy the application: ")
     secret_access_key = input("Enter the AWS_SECRET_ACCESS_KEY of the AWS account in which to deploy the application: ")
     region = input("Enter the region in which to deploy the application: ")
 
     return boto3.Session(
-        aws_access_key_id=access_key,
+        aws_access_key_id=access_key_id,
         aws_secret_access_key=secret_access_key,
         region_name=region,
     )
