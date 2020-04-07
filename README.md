@@ -138,13 +138,6 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
       # From macOS
       $ pip3 install boto3
 
-## Provided Configuration Profiles
-
-This project provides the following configuration profiles:
-
-* `env.yaml.staging` => Configuration profile intended for staging environments deployed for development, test, QA or demo purposes (lower cost and performance)
-* `env.yaml.production` => Configuration profile intended for environments with productive loads
-
 ## Execution Method
 
 Here you have the message that you will get if you request help to the `deploy.py` custom CLI:
@@ -166,6 +159,13 @@ Here you have the message that you will get if you request help to the `deploy.p
       -p PROFILE, --profile PROFILE
                             Use a specific profile from AWS CLI stored
                             configurations
+
+## Provided Configuration Profiles
+
+This project provides the following configuration profiles:
+
+* `env.yaml.staging` => Configuration profile intended for staging environments deployed for development, test, QA or demo purposes (lower cost and performance)
+* `env.yaml.production` => Configuration profile intended for environments with productive loads
 
 ## Execution Examples
 
