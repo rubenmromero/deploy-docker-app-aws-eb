@@ -117,7 +117,7 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 
     [Managing Elastic Beanstalk service roles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html)
 
-* An AWS IAM EC2 Role (only for executions from EC2 instances) or an IAM User with the following associated IAM managed policy:
+* An IAM User or an AWS IAM Role attached to the EC2 instance (only for executions from EC2 instances) with the following IAM Managed Policy attached:
 
       AWSElasticBeanstalkFullAccess
 
@@ -181,6 +181,6 @@ This project provides the following configuration profiles:
 
 * [Managing Elastic Beanstalk instance profiles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html)
 * [Managing Elastic Beanstalk service roles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html)
-* [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
 * [Single Container Docker Configuration](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
 * [Environment Manifest (env.yaml)](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-manifest.html)
+* [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)

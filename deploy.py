@@ -20,7 +20,7 @@ from zipfile import ZipFile
 #
 build_path = './build'
 application_path = build_path + '/libs'
-elasticbeanstalk_paths = ['./Dockerrun.aws.json', './Dockerfile', 'env.yaml']
+elasticbeanstalk_paths = ['Dockerrun.aws.json', 'Dockerfile', 'env.yaml']
 source_bundle_s3_bucket_prefix = 'elasticbeanstalk'
 
 #
