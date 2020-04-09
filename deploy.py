@@ -47,7 +47,7 @@ def arguments_parser():
         action='store',
         dest='environment_name',
         required=True,
-        help='Name of the deployment environment for the Elastic Beanstalk application'
+        help='Name of the environment for the Elastic Beanstalk application'
     )
     options.add_argument(
         '-p', '--profile',
@@ -238,7 +238,7 @@ while (environment_configuration) and (environment_configuration[0]['Status'] !=
     )['Environments']
 
 if (not environment_configuration) or (environment_configuration[0]['Status'] == 'Terminated'):
-    print("\nCreate '" + environment_name + "' deployment environment for '" + application_name + "' Elastic Beanstalk application:\n")
+    print("\nCreate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:\n")
     response = elasticbeanstalk.create_environment(
         ApplicationName=application_name,
         EnvironmentName=environment_name,
@@ -247,7 +247,7 @@ if (not environment_configuration) or (environment_configuration[0]['Status'] ==
         VersionLabel=application_version_package_name
     )
 else:
-    print("\nUpdate '" + environment_name + "' deployment environment for '" + application_name + "' Elastic Beanstalk application:\n")
+    print("\nUpdate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:\n")
     response = elasticbeanstalk.update_environment(
         ApplicationName=application_name,
         EnvironmentName=environment_name,

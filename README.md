@@ -19,34 +19,34 @@ This folder contains the sample code for a Spring boot application. See the inst
 
 ### Dev environment
 
-1. Go to the application directory
+1. Go to the application directory.
 2. Deploy BBDD dependencies: 
 
-```
-docker-compose up
-```
+    ```
+    docker-compose up
+    ```
 
 3. Run the application:
 
-```
-./gradlew run
-```
+    ```
+    ./gradlew run
+    ```
 
 ### Prod environment
 
 1. Build the application: 
 
-```
-./gradlew build
-```
+    ```
+    ./gradlew build
+    ```
 
-This command will generated the following jar: `build/libs/helloworld-0.0.1-SNAPSHOT.jar`
+    This command will generated the following jar: `build/libs/helloworld-0.0.1-SNAPSHOT.jar`
 
 2. Run the application: 
 
-```
-java -jar helloworld-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
-```
+    ```
+    java -jar helloworld-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
+    ```
 
 In both cases, application will run in the 8000 port.
 
@@ -58,29 +58,29 @@ This application provides a REST API for get users info.
 
 ### Get User
 
-* **URL:**`/users/{userId}`
-* **Method:**`GET`
+* **URL:** `/users/{userId}`
+* **Method:** `GET`
 * **Response:**  
 
-```json
-{"id":104,"name":"user104","surname":"surname104","type":3}
-```
+    ```json
+    {"id":104,"name":"user104","surname":"surname104","type":3}
+    ```
 
 ### Get Users by type
 
 Gets the users of the given type. 
 
-* **URL:**`/users?userType={userTypeId}` 
-* **Method:**`GET`
+* **URL:** `/users?userType={userTypeId}`
+* **Method:** `GET`
 * **Response:**  
 
-```json
-[
-  {"id":23,"name":"user23","surname":"surname23","type":6},
-  {"id":32,"name":"user32","surname":"surname32","type":6},
-  {"id":38,"name":"user38","surname":"surname38","type":6}
-]
-```
+    ```json
+    [
+      {"id":23,"name":"user23","surname":"surname23","type":6},
+      {"id":32,"name":"user32","surname":"surname32","type":6},
+      {"id":38,"name":"user38","surname":"surname38","type":6}
+    ]
+    ```
 
 Possible values of `userType` are between `1` and `10`.
 
@@ -100,7 +100,7 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 4. Create the ZIP package (source bundle) for the new application version.
 5. Upload the application version package to a source bundle S3 bucket.
 6. Create the new application version for the Elastic Beanstalk application.
-7. Create the deployment environment if it does not exist or has been previously terminated, or update it if it is already created. The CLI check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it.
+7. Create the environment if it does not exist or has been previously terminated, or update it if it is already created. The CLI check if there is an operation in progress in the environment and wait for it to be completed before updating or recreating it.
 
 ## Dependencies
 
@@ -154,8 +154,8 @@ Here you have the message that you will get if you request help to the `deploy.p
       -a APPLICATION_NAME, --application-name APPLICATION_NAME
                             Name of the Elastic Beanstalk application
       -e ENVIRONMENT_NAME, --environment-name ENVIRONMENT_NAME
-                            Name of the deployment environment for the Elastic
-                            Beanstalk application
+                            Name of the environment for the Elastic Beanstalk
+                            application
       -p PROFILE, --profile PROFILE
                             Use a specific profile from AWS CLI stored
                             configurations
