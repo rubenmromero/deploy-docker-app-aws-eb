@@ -177,6 +177,51 @@ This project provides the following configuration profiles:
     $ ln -sf env.yaml.production env.yaml
     $ ./deploy.py --application-name helloworld --environment-name live [--profile <aws_cli_profile>]
 
+## Environment Customization
+
+If you need to modify any settings provided in this project or add new ones, feel free to fork or import this repository and apply the changes you need to fulfil your use case.
+
+Here are some common customizations that you might want to add to an environment:
+
+* To deploy a `SingleInstance` type environment in a existing custom VPC, add the following configuration block to the `env.yaml.staging` file:
+
+        aws:ec2:vpc:
+          VPCId: <vpc_id>
+          Subnets: <subnet_1a_id>,<subnet_1b_id>,...      # Subnet IDs for EC2 instance
+          DBSubnets: <subnet_2a_id>,<subnet_2b_id>,...    # Subnet IDs for RDS instance
+
+* To deploy a `LoadBalanced` type environment in a existing custom VPC, add the following settings to the existing `aws:ec2:vpc` namespace in `env.yaml.production` file:
+
+        aws:ec2:vpc:
+          ELBScheme: public                               # This setting is already defined
+          VPCId: <vpc_id>
+          ELBSubnets: <subnet_3a_id>,<subnet_3b_id>,...   # Subnet IDs for ELB
+          Subnets: <subnet_1a_id>,<subnet_1b_id>,...      # Subnet IDs for Auto Scaling group
+          DBSubnets: <subnet_2a_id>,<subnet_2b_id>,...    # Subnet IDs for RDS instance
+          AssociatePublicIpAddress: true                  # Review this option in https://amzn.to/2Vhgt5B
+
+* To configure HTTPS in a `LoadBalanced` type environment for a custom domain using an ACM issued certificate, add the following configuration block to the `env.yaml.production` file:
+
+        aws:elb:listener:443:
+          ListenerProtocol: HTTPS
+          InstancePort: '80'
+          InstanceProtocol: HTTP
+          ListenerEnabled: true
+          SSLCertificateId: <acm_certificate_arn>
+
+    Then uncomment the `https-redirect-docker-sc` container command block in `.ebextensions/server-updates.config` file:
+
+        https-redirect-docker-sc:
+          command: cp .ebextensions/nginx/elasticbeanstalk-nginx-docker-proxy.conf /etc/nginx/sites-available/
+          test: '[ "$(/opt/elasticbeanstalk/bin/get-config environment -k CONFIG_PROFILE)" == "production" ]'
+
+* To configure a SSH key pair to securely log into the EC2 instance/s belonging to an environment, add the following setting to the existing `aws:autoscaling:launchconfiguration` namespace in any of the `env.yaml.<config_profile>` files:
+
+        aws:autoscaling:launchconfiguration:
+          . . .
+          . . .
+          EC2KeyName: <key_pair_name>
+
 ## Related Links
 
 * [Managing Elastic Beanstalk instance profiles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html)
