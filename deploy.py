@@ -20,7 +20,7 @@ from zipfile import ZipFile
 #
 build_path = './build'
 application_path = build_path + '/libs'
-elasticbeanstalk_paths = ['Dockerrun.aws.json', 'Dockerfile', 'env.yaml']
+elasticbeanstalk_paths = ['Dockerrun.aws.json', 'Dockerfile', 'env.yaml', '.ebextensions']
 source_bundle_s3_bucket_prefix = 'elasticbeanstalk'
 
 #
@@ -175,7 +175,7 @@ arguments = arguments_parser()
 # Check if an 'env.yaml' file exists in the project root folder
 if not os.path.isfile('env.yaml'):
     print("\nThere is no 'env.yaml' environment configuration file created in the project root folder")
-    print("\nPlease, create this file and run again the CLI executing the following commands:")
+    print("\nPlease create this file and run again the CLI executing the following commands:")
     print("\n\t$ ln -sf env.yaml.<config_profile> env.yaml")
     print("\t$ " + ' '.join(sys.argv[0:]) + "\n")
     exit(-1)

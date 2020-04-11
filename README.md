@@ -1,4 +1,4 @@
-# Deploy-Docker-App-AWS
+# Deploy-Docker-App-AWS-EB
 
 Custom CLI to deploy a dockerized [Spring Boot](https://spring.io/projects/spring-boot) application to [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/).
 
