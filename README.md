@@ -1,6 +1,6 @@
 # Deploy-Docker-App-AWS
 
-Custom CLI to deploy a dockerized Spring boot application to AWS Elastic Beanstalk.
+Custom CLI to deploy a dockerized [Spring Boot](https://spring.io/projects/spring-boot) application to [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/).
 
 ![AWS Elastic Beanstalk + Docker](aws_eb-docker.jpeg)
 
@@ -92,9 +92,9 @@ Application and access logs will be generated in the following folder: `/var/log
 
 ## How does it work?
 
-The custom CLI deploys the Spring boot example application to AWS Elastic Beanstalk performing the following tasks:
+The `deploy.py` CLI deploys the Spring boot example application to AWS Elastic Beanstalk performing the following tasks:
 
-1. Create a boto3 session to store the AWS credentials and the region to use for the deployment. If there is any configuration stored in `~/.aws` folder from AWS CLI, the AWS credentials and the region are directly retrieved from there (it is possible to specify the profile to use as optional argument). If there is no stored configuration in `~/.aws` folder, the custom CLI ask for these parameters interactively.
+1. Create a boto3 session to store the AWS credentials and the region to use for the deployment. If there is any configuration defined through [environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) or stored in AWS CLI `~/.aws` folder, the AWS credentials and the region are directly retrieved from there (it is possible to specify the profile to use as optional argument). Otherwise, the CLI asks for these parameters interactively.
 2. Check if the Elastic Beanstalk application is already created, and if not, create it.
 3. Build the Spring boot example application.
 4. Create the ZIP package (source bundle) for the new application version.
@@ -140,7 +140,7 @@ The custom CLI deploys the Spring boot example application to AWS Elastic Beanst
 
 ## Execution Method
 
-Here you have the message that you will get if you request help to the `deploy.py` custom CLI:
+Here you have the message that you will get if you request help to the `deploy.py` CLI:
 
     $ ./deploy.py --help
     usage: deploy.py [-h] -a APPLICATION_NAME -e ENVIRONMENT_NAME [-p PROFILE]
@@ -224,8 +224,8 @@ Here are some common customizations that you might want to add to an environment
 
 ## Related Links
 
-* [Managing Elastic Beanstalk instance profiles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-instanceprofile.html)
-* [Managing Elastic Beanstalk service roles](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html)
 * [Single Container Docker Configuration](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
 * [Environment Manifest (env.yaml)](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-manifest.html)
+* [General options for all environments](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html)
+* [Configuring HTTP to HTTPS redirection](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https-httpredirect.html)
 * [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
