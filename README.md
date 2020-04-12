@@ -164,8 +164,8 @@ Here you have the message that you will get if you request help to the `deploy.p
 
 This project provides the following configuration profiles:
 
-* `env.yaml.staging` => Configuration profile intended for staging environments deployed for development, test, QA or demo purposes (lower cost and performance)
-* `env.yaml.production` => Configuration profile intended for environments with productive loads
+* `env.yaml.staging` => Configuration profile intended for staging environments deployed for development, test, QA or demo purposes (lower cost and performance). This profile allows to deploy a single-instance type environment (henceforth `SingleInstance`) made up of one EC2 instance with an Elastic IP address to serve the application, and a Single-AZ RDS instance to host the databases.
+* `env.yaml.production` => Configuration profile intended for environments with productive loads. This profile allows to deploy a load-balancing, autoscaling type environment (henceforth `LoadBalanced`) made up of an Auto Scaling group of EC2 instances with an ELB to serve the application, and a Multi-AZ RDS instance to host the databases.
 
 ## Execution Examples
 
@@ -226,6 +226,7 @@ Here are some common customizations that you might want to add to an environment
 
 * [Single Container Docker Configuration](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html)
 * [Environment Manifest (env.yaml)](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-cfg-manifest.html)
+* [Environment types](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features-managing-env-types.html)
 * [General options for all environments](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html)
 * [Configuring HTTP to HTTPS redirection](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https-httpredirect.html)
 * [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
