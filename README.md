@@ -229,3 +229,4 @@ Here are some common customizations that you might want to add to an environment
 * [General options for all environments](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html)
 * [Configuring HTTP to HTTPS redirection](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/configuring-https-httpredirect.html)
 * [AWS SDK for Python (Boto3)](https://aws.amazon.com/sdk-for-python/)
+* [ElasticBeanstalk - Boto 3 Docs](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/elasticbeanstalk.html)
