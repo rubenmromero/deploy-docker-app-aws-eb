@@ -12,8 +12,8 @@ This folder contains the sample code for a Spring boot application. See the inst
 
 ## Dependencies
 
-* `PostgreSQL`: Version 9.6 or higher is required. For development environment a docker-compose is provided within this project.
-* `Java 8`
+* PostgreSQL => Version 9.6 or higher is required. For development environment a docker-compose is provided within this project.
+* Java 8
 
 ## Run application
 
@@ -104,8 +104,8 @@ The `deploy.py` CLI deploys the Spring boot example application to AWS Elastic B
 
 ## Dependencies
 
-* `Python 3.3+`
-* `boto3`
+* Python 3.3+
+* Boto3
 
 ## Prerequisites
 
