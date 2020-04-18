@@ -189,6 +189,7 @@ Here are some common customizations that you might want to add to an environment
           VPCId: <vpc_id>
           Subnets: <subnet_1a_id>,<subnet_1b_id>,...      # Subnet IDs for EC2 instance
           DBSubnets: <subnet_2a_id>,<subnet_2b_id>,...    # Subnet IDs for RDS instance
+          AssociatePublicIpAddress: true                  # Review this option in https://amzn.to/2Vhgt5B
 
 * To deploy a `LoadBalanced` type environment in a existing custom VPC, add the following settings to the existing `aws:ec2:vpc` namespace in `env.yaml.production` file:
 
