@@ -210,11 +210,7 @@ Here are some common customizations that you might want to add to an environment
           ListenerEnabled: true
           SSLCertificateId: <acm_certificate_arn>
 
-    Then uncomment the `https-redirect-docker-sc` container command block in `.ebextensions/server-updates.config` file:
-
-        https-redirect-docker-sc:
-          command: cp .ebextensions/nginx/elasticbeanstalk-nginx-docker-proxy.conf /etc/nginx/sites-available/
-          test: '[ "$(/opt/elasticbeanstalk/bin/get-config environment -k CONFIG_PROFILE)" == "production" ]'
+    Then modify the `InstancePort` setting belonging to the `aws:elb:listener:80` namespace replacing the port `80` by `81`.
 
 * To configure a SSH key pair to securely log into the EC2 instance/s belonging to an environment, add the following setting to the existing `aws:autoscaling:launchconfiguration` namespace in any of the `env.yaml.<config_profile>` files:
 
