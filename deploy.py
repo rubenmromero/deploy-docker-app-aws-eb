@@ -73,14 +73,14 @@ def print_result(output, error):
 #
 # Function to print the boto3 responses in JSON format
 #
-def print_response(response):
-    print(json.dumps(
+def json_response(response):
+    return json.dumps(
         response,
         default=str,
         sort_keys=True,
         indent=4,
         separators=(',', ': ')
-    ))
+    )
 
 #
 # Function to create a session of boto3 to interact with the AWS account
@@ -186,12 +186,12 @@ elasticbeanstalk = session.client('elasticbeanstalk')
 # Check if the Elastic Beanstalk application is already created
 application_name = arguments.application_name
 if not elasticbeanstalk.describe_applications(ApplicationNames=[application_name])['Applications']:
-    print("\nCreate '" + application_name + "' Elastic Beanstalk application:\n")
+    print("\nCreate '" + application_name + "' Elastic Beanstalk application:")
     response = elasticbeanstalk.create_application(
         ApplicationName=application_name,
         Description=application_name + ' Application'
     )
-    print_response(response)
+    print(json_response(response))
 
 print("\nBuild the application:\n")
 build_application()
@@ -202,7 +202,7 @@ application_version_package_name = package_application()
 print("\nUpload the application version package to a source bundle S3 bucket:\n")
 source_bundle_s3_bucket = upload_application_version()
 
-print("\nCreate '" + application_version_package_name + "' application version for '" + application_name + "' Elastic Beanstalk application:\n")
+print("\nCreate '" + application_version_package_name + "' application version for '" + application_name + "' Elastic Beanstalk application:")
 response = elasticbeanstalk.create_application_version(
     ApplicationName=application_name,
     VersionLabel=application_version_package_name,
@@ -213,7 +213,7 @@ response = elasticbeanstalk.create_application_version(
     AutoCreateApplication=False,
     Process=True
 )
-print_response(response)
+print(json_response(response))
 
 # Wait a few seconds while the created application version is processed
 time.sleep(10)
@@ -238,7 +238,7 @@ while (environment_configuration) and (environment_configuration[0]['Status'] !=
     )['Environments']
 
 if (not environment_configuration) or (environment_configuration[0]['Status'] == 'Terminated'):
-    print("\nCreate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:\n")
+    print("\nCreate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:")
     response = elasticbeanstalk.create_environment(
         ApplicationName=application_name,
         EnvironmentName=environment_name,
@@ -247,10 +247,10 @@ if (not environment_configuration) or (environment_configuration[0]['Status'] ==
         VersionLabel=application_version_package_name
     )
 else:
-    print("\nUpdate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:\n")
+    print("\nUpdate '" + environment_name + "' environment for '" + application_name + "' Elastic Beanstalk application:")
     response = elasticbeanstalk.update_environment(
         ApplicationName=application_name,
         EnvironmentName=environment_name,
         VersionLabel=application_version_package_name
     )
-print_response(response)
+print(json_response(response))
